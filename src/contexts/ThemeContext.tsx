@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { createContext, useState } from "react";
-import { ThemeContextType } from "../@types/theme";
+import React, { createContext, useEffect } from 'react';
+import { ThemeContextType } from '../@types/theme';
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
@@ -10,11 +10,16 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState("green-code");
+  const [theme, setTheme] = React.useState('green-code');
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.className = theme;
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className={`${theme} min-h-screen`}>{children}</div>
+      {children}
     </ThemeContext.Provider>
   );
 };
