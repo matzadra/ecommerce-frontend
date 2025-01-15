@@ -1,5 +1,5 @@
-import React from "react";
-import ProductPlaceholder from "../../components/product/Product"; // Ajuste o caminho conforme necessário
+import React from 'react';
+import ProductPlaceholder from '../../components/product/ProductDetails'; // Ajuste o caminho conforme necessário
 
 const ProductPage = () => {
   return <ProductPlaceholder />;
