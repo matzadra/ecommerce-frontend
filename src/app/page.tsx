@@ -1,14 +1,17 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+import createApolloClient from "../services/apolloClient";
 import { GET_PRODUCTS_AND_CATEGORIES } from "../services/productService";
-import ProductCard from "../components/ProductCard";
-import Navbar from "../components/Navbar";
+import ProductCard from "../components/product/ProductCard";
+import Navbar from "../components/shared/Navbar";
 
-const HomePage: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_PRODUCTS_AND_CATEGORIES);
+import { Category } from "@/@types/category";
+import { Product } from "@/@types/product";
 
-  if (loading) return <p>Carregando...</p>;
-  if (error) return <p>Erro ao carregar dados: {error.message}</p>;
+const HomePage = async () => {
+  const client = createApolloClient();
+  const { data } = await client.query({
+    query: GET_PRODUCTS_AND_CATEGORIES,
+  });
 
   const { getAllProducts, getAllCategories } = data;
 
@@ -16,18 +19,20 @@ const HomePage: React.FC = () => {
     <div>
       <Navbar />
       <main className="p-4">
-        {getAllCategories.map((category: any) => (
+        {getAllCategories.map((category: Category) => (
           <section key={category.id} className="mb-8">
             <h2 className="text-2xl font-bold mb-4">{category.name}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {getAllProducts
-                .filter((product: any) => product.categoryId === category.id)
-                .map((product: any) => (
+                .filter(
+                  (product: Product) => product.categoryId === category.id
+                )
+                .map((product: Product) => (
                   <ProductCard
                     key={product.id}
                     name={product.name}
                     price={product.price}
-                    imageUrl="https://placehold.co/300"
+                    imageUrl="https://placehold.co/300x300.jpg"
                   />
                 ))}
             </div>
