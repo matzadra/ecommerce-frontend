@@ -12,15 +12,12 @@ const CategorySection: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log('Dispatching fetchCategoriesThunk');
     if (categories.length === 0) {
       dispatch(fetchCategoriesThunk());
     }
   }, [dispatch, categories.length]);
 
-  console.log({ categories, loading, error });
-
-  if (loading || categories.length === 0) {
+  if (loading) {
     return <p>Carregando categorias...</p>;
   }
 
