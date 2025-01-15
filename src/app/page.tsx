@@ -1,61 +1,25 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useTheme } from '@/hooks/useTheme';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store';
+import { fetchCategoriesThunk } from '@/store/slices/categorySlice';
+import { fetchFeaturedProductsThunk } from '@/store/slices/featuredProductsSlice';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import ProductCard from '@/components/product/ProductCard';
-import { fetchProductsAndCategories } from '@/services/productService';
 
-import { Category } from '@/@types/category';
-import { Product } from '@/@types/product';
 import HeroBanner from '@/components/shared/HeroBanner';
+import CategorySection from '@/components/homepage/CategorySection';
+import FeaturedProducts from '@/components/homepage/FeaturedProducts';
+import { useTheme } from '@/hooks/useTheme';
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { products, categories } = await fetchProductsAndCategories();
-      setProducts(products);
-      setCategories(categories);
-    };
-    fetchData();
-  }, []);
-
-  const renderCategorySection = (category: Category) => {
-    const filteredProducts = products.filter(
-      (product: Product) => product.categoryId === category.id
-    );
-
-    return (
-      <motion.section
-        key={category.id}
-        className="mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2
-          className={clsx(`text-${theme}-primary`, 'text-2xl font-bold mb-4')}
-        >
-          {category.name}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product: Product) => (
-            <ProductCard
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              imageUrl={'https://placehold.co/300x300.jpg'}
-            />
-          ))}
-        </div>
-      </motion.section>
-    );
-  };
+    dispatch(fetchCategoriesThunk());
+    dispatch(fetchFeaturedProductsThunk());
+  }, [dispatch]);
 
   return (
     <div
@@ -65,7 +29,8 @@ const HomePage: React.FC = () => {
       )}
     >
       <HeroBanner />
-      {categories.map(renderCategorySection)}
+      <CategorySection />
+      <FeaturedProducts />
     </div>
   );
 };

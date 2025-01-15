@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import { ApolloProvider } from "@apollo/client";
-import createApolloClient from "../services/apolloClient";
+import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import createApolloClient from '@/services/apolloClient';
 
 const client = createApolloClient();
+
+console.log('ApolloProviderWrapper inicializado no cliente.');
 
 const ApolloProviderWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
