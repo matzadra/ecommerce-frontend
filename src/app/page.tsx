@@ -1,25 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store';
-import { fetchCategoriesThunk } from '@/store/slices/categorySlice';
-import { fetchFeaturedProductsThunk } from '@/store/slices/featuredProductsSlice';
 import clsx from 'clsx';
-
-import HeroBanner from '@/components/shared/HeroBanner';
-import CategorySection from '@/components/homepage/CategorySection';
-import FeaturedProducts from '@/components/homepage/FeaturedProducts';
 import { useTheme } from '@/hooks/useTheme';
+import HeroBanner from '@/components/shared/HeroBanner';
+import FeaturedProducts from '@/components/homepage/FeaturedProducts';
+import CategorySection from '@/components/homepage/CategorySection';
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchCategoriesThunk());
-    dispatch(fetchFeaturedProductsThunk());
-  }, [dispatch]);
 
   return (
     <div
@@ -29,8 +17,8 @@ const HomePage: React.FC = () => {
       )}
     >
       <HeroBanner />
-      <CategorySection />
       <FeaturedProducts />
+      <CategorySection />
     </div>
   );
 };
