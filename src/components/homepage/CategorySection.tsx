@@ -3,20 +3,23 @@ import { useGetAllCategoriesQuery } from '@/store/api';
 import { Category } from '@/@types/category';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/hooks/useTheme';
+import Link from 'next/link';
 
 const CategorySection: React.FC = () => {
   const { data, error, isLoading } = useGetAllCategoriesQuery();
   const { theme } = useTheme();
 
   if (isLoading) {
-    return <p>Carregando categorias...</p>;
+    return <p className="text-center">Carregando categorias...</p>;
   }
 
   if (error) {
-    return <p>Erro ao carregar categorias.</p>;
+    return <p className="text-center">Erro ao carregar categorias.</p>;
   }
 
-  const categories = data?.data?.getAllCategories || [];
+  const categories: Category[] = Array.isArray(data?.data?.getAllCategories)
+    ? data.data.getAllCategories
+    : [];
 
   return (
     <div
@@ -26,7 +29,7 @@ const CategorySection: React.FC = () => {
         Categorias
       </h2>
       <motion.ul
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -37,7 +40,12 @@ const CategorySection: React.FC = () => {
             className={`p-4 border border-${theme}-primary rounded-md shadow-sm hover:bg-${theme}-hover transition-all`}
             whileHover={{ scale: 1.1 }}
           >
-            <span className={`text-${theme}-text`}>{category.name}</span>
+            <Link
+              href={`/category/${category.id}`}
+              className={`text-${theme}-text`}
+            >
+              {category.name}
+            </Link>
           </motion.li>
         ))}
       </motion.ul>

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import clsx from 'clsx';
 import { useTheme } from '@/hooks/useTheme';
 import HeroBanner from '@/components/shared/HeroBanner';
@@ -13,12 +14,18 @@ const HomePage: React.FC = () => {
     <div
       className={clsx(
         `bg-${theme}-background text-${theme}-text`,
-        'container mx-auto px-4'
+        'min-h-screen flex flex-col'
       )}
     >
-      <HeroBanner />
-      <FeaturedProducts />
-      <CategorySection />
+      <main className="flex-grow">
+        <HeroBanner />
+        <section className="my-12">
+          <CategorySection />
+        </section>
+        <section className="my-12">
+          <FeaturedProducts />
+        </section>
+      </main>
     </div>
   );
 };

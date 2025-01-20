@@ -10,7 +10,13 @@ type GetAllProductsResponse = {
 
 type GetAllCategoriesResponse = {
   data: {
-    getAllCategories: Category[];
+    getAllCategories: Category;
+  };
+};
+
+type getProductByIdResponse = {
+  data: {
+    getProductById: Product;
   };
 };
 
@@ -48,17 +54,39 @@ export const api = createApi({
           query: `
             query {
               getAllProducts {
+              id
+              name
+              categoryId
+              variations {
                 id
-                name
+                color
                 price
                 stock
+                images
+              }
+            }
+          }
+          `,
+        },
+      }),
+    }),
+    getProductById: builder.query<getProductByIdResponse, number>({
+      query: (id) => ({
+        url: '',
+        method: 'POST',
+        body: {
+          query: `
+          query {
+            getProductById(id:${id}){
+                id
+                name                               
                 categoryId
                 variations {
                   id
                   color
-                  size
                   price
                   stock
+                  images
                 }
               }
             }
@@ -69,4 +97,8 @@ export const api = createApi({
   }),
 });
 
-export const { useGetAllCategoriesQuery, useGetAllProductsQuery } = api;
+export const {
+  useGetAllCategoriesQuery,
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
+} = api;
